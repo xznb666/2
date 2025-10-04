@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>微信程序</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="embeddedPage" src=""></iframe>
+
+    <script>
+        // 获取URL中的hd参数
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // 解码Base64编码的URL
+        function decodeBase64Url(encodedUrl) {
+            return decodeURIComponent(atob(encodedUrl).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+        }
+
+        // 获取并解码xh参数
+        const encodedUrl = getQueryParam('xh');
+        if (encodedUrl) {
+            const decodedUrl = decodeBase64Url(encodedUrl);
+            document.getElementById('embeddedPage').src = decodedUrl;
+        } else {
+            document.body.innerHTML = '<p>错误</p>';
+        }
+    </script>
+</body>
+</html>
